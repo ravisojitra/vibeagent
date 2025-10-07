@@ -1,13 +1,15 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { db } from "@/lib/db"; // your drizzle instance
+import { db } from "@/core/db";
 
 export const auth = betterAuth({
     database: drizzleAdapter(db, {
         provider: "pg", // or "mysql", "sqlite"
+
     }),
     emailAndPassword: {
         enabled: true,
+        requireEmailVerification: false, // Email verification disabled
     },
     socialProviders: {
         // github: {
@@ -21,4 +23,8 @@ export const auth = betterAuth({
             maxAge: 5 * 60, // Cache duration in seconds
         },
     },
+    trustedOrigins: [
+        "http://localhost:3000",
+    ],
 });
+

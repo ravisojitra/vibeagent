@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { generateUUID } from "@/lib/utils";
 import { authClient } from "@/lib/auth-client";
@@ -7,10 +7,14 @@ import { DataStreamHandler } from "@/components/chat/data-stream-handler";
 import { Chat } from "@/components/chat/chat";
 
 export default async function Page() {
-  const session = await authClient.getSession();
-
+  const { data: session } = await authClient.getSession({
+    fetchOptions: {
+      headers: await headers(),
+    },
+  });
+  console.log({ session });
   if (!session) {
-    redirect("/api/auth/guest");
+    redirect("/signin");
   }
 
   const id = generateUUID();
@@ -28,6 +32,7 @@ export default async function Page() {
         initialVisibilityType="private"
         isReadonly={false}
         key={id}
+        user={session.user}
       />
       <DataStreamHandler />
     </>

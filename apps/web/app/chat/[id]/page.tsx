@@ -1,4 +1,4 @@
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 import { Chat } from "@/components/chat/chat";
 import { getChatById, getMessagesByChatId } from "@/actions/queries";
@@ -16,7 +16,11 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     notFound();
   }
 
-  const session = await authClient.getSession();
+  const session = await authClient.getSession({
+    fetchOptions: {
+      headers: await headers(),
+    },
+  });
 
   if (!session) {
     redirect("/api/auth/guest");
@@ -35,7 +39,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   const messagesFromDb = await getMessagesByChatId({
     id,
   });
-
+  console.log({ messagesFromDb })
   const uiMessages = convertToUIMessages(messagesFromDb);
 
   const cookieStore = await cookies();

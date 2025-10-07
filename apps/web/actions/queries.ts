@@ -2,6 +2,9 @@
 import { ChatSDKError } from "@/lib/errors";
 import { VisibilityType } from "@/types/chat";
 import { cookies } from "next/headers";
+import { fetcher } from "@/lib/callApi";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export async function saveChatModelAsCookie(model: string) {
   const cookieStore = await cookies();
@@ -10,12 +13,8 @@ export async function saveChatModelAsCookie(model: string) {
 
 export async function getChatById({ id }: { id: string }) {
   try {
-    const [selectedChat] = await db.select().from(chat).where(eq(chat.id, id));
-    if (!selectedChat) {
-      return null;
-    }
-
-    return selectedChat;
+    const chat = await fetcher(`${API_URL}/api/chat/${id}`);
+    return chat;
   } catch (_error) {
     throw new ChatSDKError("bad_request:database", "Failed to get chat by id");
   }
@@ -23,11 +22,7 @@ export async function getChatById({ id }: { id: string }) {
 
 export async function getMessagesByChatId({ id }: { id: string }) {
   try {
-    return await db
-      .select()
-      .from(message)
-      .where(eq(message.chatId, id))
-      .orderBy(asc(message.createdAt));
+    return await fetcher(`${API_URL}/api/chat/${id}/messages`);
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
@@ -44,7 +39,11 @@ export async function updateChatVisibility({
   visibility: VisibilityType;
 }) {
   try {
-    return await db.update(chat).set({ visibility }).where(eq(chatId, chatId));
+    return await fetcher(`${API_URL}/api/chat/${chatId}/visibility`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visibility }),
+    });
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
@@ -55,7 +54,7 @@ export async function updateChatVisibility({
 
 export async function getMessageById({ id }: { id: string }) {
   try {
-    return await db.select().from(message).where(eq(message.id, id));
+    return await fetcher(`${API_URL}/api/message/${id}`);
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
@@ -65,41 +64,14 @@ export async function getMessageById({ id }: { id: string }) {
 }
 
 export async function deleteTrailingMessages({ id }: { id: string }) {
-  const [message] = await getMessageById({ id });
-
-  const chatId = message.chatId
-  const timestamp = message.createdAt
-
   try {
-    const messagesToDelete = await db
-      .select({ id: message.id })
-      .from(message)
-      .where(
-        and(eq(message.chatId, chatId), gte(message.createdAt, timestamp))
-      );
-
-    const messageIds = messagesToDelete.map(
-      (currentMessage) => currentMessage.id
-    );
-
-    if (messageIds.length > 0) {
-      await db
-        .delete(vote)
-        .where(
-          and(eq(vote.chatId, chatId), inArray(vote.messageId, messageIds))
-        );
-
-      return await db
-        .delete(message)
-        .where(
-          and(eq(message.chatId, chatId), inArray(message.id, messageIds))
-        );
-    }
+    return await fetcher(`${API_URL}/api/message/${id}/trailing`, {
+      method: 'DELETE',
+    });
   } catch (_error) {
     throw new ChatSDKError(
       "bad_request:database",
       "Failed to delete messages by chat id after timestamp"
     );
   }
-
 }

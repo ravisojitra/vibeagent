@@ -2,6 +2,9 @@
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { Pool } from 'pg';
 import * as schema from './schema';
+import * as env from 'dotenv';
+
+env.config({ path: '.env.local' });
 
 declare global {
     // Prevent multiple instances of pool in development
@@ -11,12 +14,11 @@ declare global {
     // eslint-disable-next-line no-var
     var cachedDb: ReturnType<typeof drizzle> | undefined;
 }
-
 const pool =
     global.cachedPool ||
     new Pool({
-        database: process.env.DATABASE_URL,
-        ssl: { rejectUnauthorized: false },
+        connectionString: process.env.DATABASE_URL,
+        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
         max: 5,
         idleTimeoutMillis: 20000,
         connectionTimeoutMillis: 20000,
@@ -34,3 +36,4 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export { pool, db };
+

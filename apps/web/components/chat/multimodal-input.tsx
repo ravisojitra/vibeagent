@@ -20,7 +20,7 @@ import { toast } from "sonner";
 import { useLocalStorage, useWindowSize } from "usehooks-ts";
 import { saveChatModelAsCookie } from "@/actions/queries";
 import { SelectItem } from "@/components/ui/select";
-import { myProvider } from "@/lib/ai/providers";
+// import { myProvider } from "@/lib/ai/providers";
 import type { Attachment, ChatMessage, AppUsage, VisibilityType } from "@/types/chat";
 import { cn } from "@/lib/utils";
 import {
@@ -193,9 +193,9 @@ function PureMultimodalInput({
     }
   }, []);
 
-  const _modelResolver = useMemo(() => {
-    return myProvider.languageModel(selectedModelId);
-  }, [selectedModelId]);
+  // const _modelResolver = useMemo(() => {
+  //   return myProvider.languageModel(selectedModelId);
+  // }, [selectedModelId]);
 
   const contextProps = useMemo(
     () => ({

@@ -1,0 +1,1 @@
+ALTER TABLE "Chat" ALTER COLUMN "projectId" SET DATA TYPE text;

@@ -82,7 +82,7 @@ export const chat = pgTable("Chat", {
     id: uuid("id").primaryKey().notNull().defaultRandom(),
     createdAt: timestamp("createdAt").notNull(),
     title: text("title").notNull(),
-    projectId: uuid("projectId")
+    projectId: text("projectId")
         .notNull()
         .references(() => projects.id),
     commitHash: text("commitHash").notNull(),
@@ -165,3 +165,4 @@ export type Integration = typeof integrations.$inferSelect;
 export type Chat = InferSelectModel<typeof chat>;
 export type DBMessage = InferSelectModel<typeof message>;
 export type Stream = InferSelectModel<typeof stream>;
+

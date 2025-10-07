@@ -1,8 +1,16 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { auth } from '@/lib/auth';
 import { serve } from '@hono/node-server'
-import { POST as chatPOST } from './routes/chat';
+import {
+  POST as chatPOST,
+  GET as chatGET,
+  getMessages,
+  updateVisibility,
+  getMessage,
+  deleteTrailing
+} from '@/features/chat/chat.routes';
+import { auth } from './core/auth';
+
 const app = new Hono()
 
 // Enable CORS for Next.js frontend
@@ -18,6 +26,11 @@ app.get('/', (c) => {
 })
 
 app.post("/api/chat", (c) => chatPOST(c));
+app.get("/api/chat/:id", (c) => chatGET(c));
+app.get("/api/chat/:id/messages", (c) => getMessages(c));
+app.patch("/api/chat/:id/visibility", (c) => updateVisibility(c));
+app.get("/api/message/:id", (c) => getMessage(c));
+app.delete("/api/message/:id/trailing", (c) => deleteTrailing(c));
 
 const port = 3001
 

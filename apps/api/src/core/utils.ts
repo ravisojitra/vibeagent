@@ -6,7 +6,7 @@ import type {
 } from 'ai';
 import { formatISO } from 'date-fns';
 import type { DBMessage } from './schema';
-import type { ChatMessage, ChatTools } from './types';
+import type { ChatMessage, ChatTools } from '@/features/chat/chat.types';
 
 export function generateUUID(): string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
@@ -16,7 +16,7 @@ export function generateUUID(): string {
     });
 }
 
-type ResponseMessageWithoutId = ToolModelMessage | AssistantModelMessage; ``
+type ResponseMessageWithoutId = ToolModelMessage | AssistantModelMessage;
 type ResponseMessage = ResponseMessageWithoutId & { id: string };
 
 export function getMostRecentUserMessage(messages: UIMessage[]) {
@@ -57,3 +57,4 @@ export function getTextFromMessage(message: ChatMessage): string {
         .map((part) => part.text)
         .join('');
 }
+

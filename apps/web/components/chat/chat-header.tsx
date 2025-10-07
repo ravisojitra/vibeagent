@@ -10,15 +10,22 @@ import { PlusIcon, VercelIcon } from "@/constants/icons";
 import { useSidebar } from "@/components/ui/sidebar";
 import { VisibilitySelector } from "@/components/chat/visibility-selector";
 import { VisibilityType } from "@/types/chat";
+import { UserMenu } from "@/components/chat/user-menu";
 
 function PureChatHeader({
   chatId,
   selectedVisibilityType,
   isReadonly,
+  user,
 }: {
   chatId: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
+  user?: {
+    name: string;
+    email: string;
+    image?: string | null;
+  };
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -64,6 +71,12 @@ function PureChatHeader({
           Deploy with Vercel
         </Link>
       </Button>
+
+      {user && (
+        <div className="order-4 ml-2">
+          <UserMenu user={user} />
+        </div>
+      )}
     </header>
   );
 }
@@ -72,6 +85,7 @@ export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
   return (
     prevProps.chatId === nextProps.chatId &&
     prevProps.selectedVisibilityType === nextProps.selectedVisibilityType &&
-    prevProps.isReadonly === nextProps.isReadonly
+    prevProps.isReadonly === nextProps.isReadonly &&
+    prevProps.user?.email === nextProps.user?.email
   );
 });
