@@ -1,0 +1,13 @@
+{
+    "name": "vibecodeagent",
+    "scripts": {
+        "install:all": "bun install && cd apps/web && bun install && cd ../api && bun install",
+        "dev": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"blue,green\" \"cd apps/web && bun run dev\" \"cd apps/api && bun run dev\"",
+        "dev:frontend": "cd apps/web && bun run dev",
+        "dev:backend": "cd apps/api && bun run dev",
+        "build": "cd apps/web && bun run build && cd ../api && bun run build"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.2"
+    }
+}
