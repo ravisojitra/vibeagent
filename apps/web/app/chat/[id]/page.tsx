@@ -23,7 +23,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   });
 
   if (!session) {
-    redirect("/api/auth/guest");
+    redirect("/signin");
   }
 
   if (chat.visibility === "private") {
