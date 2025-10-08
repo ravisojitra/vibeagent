@@ -35,8 +35,8 @@ export function PreviewSection({ setShowPreview, setShowChat }: { setShowPreview
     };
 
     return (
-        <div className="flex h-full w-full flex-col bg-background rounded-t-lg">
-            <Tabs defaultValue="standard" className="flex h-full w-full flex-col">
+        <div className="flex h-full w-full flex-col bg-card rounded-lg">
+            <Tabs defaultValue="standard" className="flex h-full w-full flex-col gap-0">
                 {/* Header with all controls */}
                 <div className="flex flex-col gap-2 border-b border-border bg-card px-2 py-1 rounded-t-lg">
 

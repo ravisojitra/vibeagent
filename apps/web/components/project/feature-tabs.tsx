@@ -10,7 +10,7 @@ export function FeatureTabs() {
                 <Code className="h-[14px] w-[14px]" />
                 Standard
             </TabsTrigger>
-            <TabsTrigger value="scientific" className="text-xs md:text-sm gap-1">
+            <TabsTrigger value="code" className="text-xs md:text-sm gap-1">
                 <Code className="h-[14px] w-[14px]" />
                 Code
             </TabsTrigger>
