@@ -57,10 +57,12 @@ function PureChatHeader({
           selectedVisibilityType={selectedVisibilityType}
         />
       )}
-
+      <Button variant="outline">
+        Test
+      </Button>
       <Button
         asChild
-        className="order-3 hidden bg-zinc-900 px-2 text-zinc-50 hover:bg-zinc-800 md:ml-auto md:flex md:h-fit dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200"
+        className="order-3 hidden px-2 md:ml-auto md:flex md:h-fit"
       >
         <Link
           href={"https://vercel.com/templates/next.js/nextjs-ai-chatbot"}

@@ -83,7 +83,7 @@ function PureMultimodalInput({
 
   const adjustHeight = useCallback(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "44px";
+      textareaRef.current.style.height = "80px";
     }
   }, []);
 
@@ -95,7 +95,7 @@ function PureMultimodalInput({
 
   const resetHeight = useCallback(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "44px";
+      textareaRef.current.style.height = "80px";
     }
   }, []);
 
@@ -232,7 +232,7 @@ function PureMultimodalInput({
 
   return (
     <div className={cn("relative flex w-full flex-col gap-4", className)}>
-      {messages.length === 0 &&
+      {/* {messages.length === 0 &&
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
           <SuggestedActions
@@ -240,7 +240,7 @@ function PureMultimodalInput({
             selectedVisibilityType={selectedVisibilityType}
             sendMessage={sendMessage}
           />
-        )}
+        )} */}
 
       <input
         className="-top-4 -left-4 pointer-events-none fixed size-0.5 opacity-0"

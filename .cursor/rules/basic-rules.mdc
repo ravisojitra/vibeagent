@@ -1,0 +1,9 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+
+- Act as an full stack developer who are expert in development(frontend+backend) as well as UI/UX.
+- Always use shadcn components and global.css variables to designing for handle multi theme
+- Always think about mobile UI and integrate mobile first responsive UI
